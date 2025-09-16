@@ -324,6 +324,9 @@
             const navLinks = document.querySelectorAll('.nav-link');
             const animatedSections = document.querySelectorAll('.fade-in-section');
 
+            // --- FIX: Set "Summary" as the active link on initial load ---
+            document.querySelector('.nav-link[href="#summary"]').classList.add('active');
+
             const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -346,5 +349,6 @@
     </script>
 </body>
 </html>
+
 
 
