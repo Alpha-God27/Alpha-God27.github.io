@@ -1,152 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K Prem Sivam Reddy - Interactive Resume</title>
+    <title>K Prem Sivam Reddy - Fullstack Engineer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #111827;
+            transition: background-color 0.3s, color 0.3s;
         }
+        
+        /* Light Mode Styles */
+        .light body { background-color: #f9fafb; color: #1f2937; }
+        .light .bg-card { background-color: #ffffff; }
+        .light .text-main { color: #111827; }
+        .light .text-secondary { color: #4b5563; }
+        .light .text-accent { color: #4f46e5; }
+        .light .border-card { border-color: #e5e7eb; }
+        .light .skill-badge { background-color: #eef2ff; color: #4338ca; }
+
+        /* Dark Mode Styles */
+        .dark body { background-color: #111827; color: #d1d5db; }
+        .dark .bg-card { background-color: #1f2937; }
+        .dark .text-main { color: #f9fafb; }
+        .dark .text-secondary { color: #9ca3af; }
+        .dark .text-accent { color: #818cf8; }
+        .dark .border-card { border-color: #374151; }
+        .dark .skill-badge { background-color: #3730a3; color: #e0e7ff; }
+        .dark .nav-link.active { color: #818cf8; }
+        .dark .nav-link::before { background-color: #818cf8; }
+
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 450px;
+            margin: auto;
             height: 300px;
-            max-height: 350px;
+            max-height: 400px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            padding-left: 1.25rem;
         }
-        .nav-link.active {
-            color: #4f46e5;
-            font-weight: 600;
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 0;
+            background-color: #4f46e5;
+            transition: height 0.2s ease-in-out;
+            border-radius: 2px;
+        }
+        .nav-link.active { color: #4f46e5; font-weight: 600; }
+        .nav-link.active::before { height: 100%; }
+
+        .section-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .skill-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 0.25rem;
+            transition: background-color 0.2s;
+        }
+        
+        /* Fade-in Animation on Scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body class="antialiased">
     <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
         <div class="flex flex-col md:flex-row md:space-x-12">
-            <aside class="w-full md:w-1/4">
+            
+            <!-- Left Sidebar -->
+            <aside class="w-full md:w-1/3 lg:w-1/4">
                 <div class="sticky top-8">
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-900">K Prem Sivam Reddy</h1>
-                        <p class="text-gray-500 mt-1">Fullstack Engineer</p>
+                    <div class="flex items-center space-x-4">
+                        <img class="w-20 h-20 rounded-full object-cover" src="https://placehold.co/200x200/eef2ff/4f46e5?text=KP" alt="K Prem Sivam Reddy">
+                        <div>
+                            <h1 class="text-2xl font-bold text-main">K Prem Sivam Reddy</h1>
+                            <p class="text-accent mt-1 font-medium">Fullstack Engineer</p>
+                        </div>
                     </div>
-                    <nav class="mt-8">
-                        <ul class="space-y-3">
-                            <li><a href="#summary" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Summary</a></li>
-                            <li><a href="#experience" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Experience</a></li>
-                            <li><a href="#projects" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Projects</a></li>
-                            <li><a href="#skills" class="nav-link text-gray-600 hover:text-indigo-600 font-medium">Skills</a></li>
+
+                    <nav class="mt-10">
+                        <ul class="space-y-4">
+                            <li><a href="#summary" class="nav-link text-secondary hover:text-accent font-medium">Summary</a></li>
+                            <li><a href="#experience" class="nav-link text-secondary hover:text-accent font-medium">Experience</a></li>
+                            <li><a href="#projects" class="nav-link text-secondary hover:text-accent font-medium">Projects</a></li>
+                            <li><a href="#skills" class="nav-link text-secondary hover:text-accent font-medium">Skills</a></li>
                         </ul>
                     </nav>
-                    <div class="mt-8 border-t pt-6">
-                        <h3 class="text-sm font-semibold text-gray-900">Contact</h3>
-                        <ul class="mt-3 space-y-2 text-gray-600 text-sm">
-                            <li class="truncate"><a href="mailto:kpremsivamreddy@gmail.com" class="hover:text-indigo-600">kpremsivamreddy@gmail.com</a></li>
-                            <li>+91 8144214375</li>
-                            <li><a href="https://github.com/your-username" class="hover:text-indigo-600" target="_blank">GitHub</a></li>
-                            <li><a href="https://linkedin.com/in/your-profile" class="hover:text-indigo-600" target="_blank">LinkedIn</a></li>
-                        </ul>
+
+                    <a href="mailto:kpremsivamreddy@gmail.com" class="mt-10 inline-block w-full text-center bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition-colors">
+                        Get In Touch
+                    </a>
+
+                    <div class="mt-10 border-t border-card pt-6">
+                        <!-- Dark Mode Toggle -->
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold text-main uppercase tracking-wider">Theme</h3>
+                            <button id="theme-toggle" class="p-2 rounded-full bg-card border border-card">
+                                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </aside>
 
-            <main class="w-full md:w-3/4 mt-12 md:mt-0">
-                <section id="summary" class="mb-16">
-                    <h2 class="text-xl font-bold text-gray-900 border-b pb-3">Summary</h2>
-                    <p class="mt-4 text-gray-700 leading-relaxed">
+            <!-- Right Content Area -->
+            <main class="w-full md:w-2/3 lg:w-3/4 mt-12 md:mt-0">
+                <section id="summary" class="mb-16 fade-in-section">
+                    <h2 class="text-2xl font-bold text-main border-b-2 border-card pb-4">Summary</h2>
+                    <p class="mt-6 text-secondary leading-relaxed text-base">
                         A product-focused Fullstack Engineer with 1.6 years of experience in designing, implementing, and shipping user-centric web applications. Proficient in building scalable backend services with Python (FastAPI) and creating responsive frontend components with React. Eager to contribute to a fast-paced, collaborative environment, take ownership of features, and grow in a culture that values experimentation and continuous learning.
                     </p>
                 </section>
 
-                <section id="experience" class="mb-16">
-                    <h2 class="text-xl font-bold text-gray-900 border-b pb-3">Experience</h2>
-                    <div class="mt-6">
-                        <h3 class="text-lg font-semibold text-gray-800">Software Engineer</h3>
-                        <p class="text-gray-500 text-sm">Eximietas Design | Bengaluru, India</p>
-                        <p class="text-sm text-gray-400">Jan 2024 - Present</p>
-                        <ul class="mt-4 list-disc list-inside text-gray-700 space-y-2">
-                            <li>Engineered and deployed robust backend services for a high-traffic healthcare platform using Python and FastAPI, ensuring 99.9% service uptime.</li>
-                            <li>Architected a scalable backend system to manage over 500+ daily patient records.</li>
-                            <li>Developed a responsive, full-stack security and monitoring dashboard using React and FastAPI.</li>
+                <section id="experience" class="mb-16 fade-in-section">
+                    <h2 class="text-2xl font-bold text-main border-b-2 border-card pb-4">Experience</h2>
+                    <div class="mt-6 bg-card p-8 rounded-xl shadow-sm border border-card section-card">
+                        <div class="flex flex-col sm:flex-row justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-semibold text-main">Software Engineer</h3>
+                                <p class="text-accent text-sm font-medium">Eximietas Design | Bengaluru, India</p>
+                            </div>
+                            <p class="text-sm text-secondary mt-2 sm:mt-0">Jan 2024 - Present</p>
+                        </div>
+                        <ul class="mt-6 list-disc list-inside text-secondary space-y-3">
+                            <li>Engineered robust backend services for a high-traffic healthcare platform using Python and FastAPI, ensuring 99.9% uptime.</li>
+                            <li>Architected a scalable backend to manage 500+ daily patient records and developed a secure dashboard with React.</li>
                             <li>Improved incident response time by 30% by implementing a secure backend with JWT/OAuth2 authentication.</li>
-                            <li>Collaborated effectively with product and design teams to translate requirements into technical specifications.</li>
                         </ul>
                     </div>
                 </section>
 
-                <section id="projects" class="mb-16">
-                    <h2 class="text-xl font-bold text-gray-900 border-b pb-3">Projects</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
-                        <div class="border border-gray-200 p-6 rounded-lg">
-                            <h3 class="text-lg font-semibold text-gray-800">Full-Stack Security Dashboard</h3>
-                            <p class="text-sm text-gray-400">Oct 2024 - Nov 2024</p>
-                            <ul class="mt-4 list-disc list-inside text-gray-700 space-y-2 text-sm">
-                                <li>Led end-to-end development from UI/UX design in Figma to a responsive React frontend.</li>
-                                <li>Engineered the backend API using FastAPI and managed data with SQLAlchemy.</li>
-                                <li>Strengthened security with Role-Based Access Control (RBAC) and JWT tokens.</li>
+                <section id="projects" class="mb-16 fade-in-section">
+                    <h2 class="text-2xl font-bold text-main border-b-2 border-card pb-4">Projects</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-6">
+                        <div class="bg-card p-6 rounded-xl shadow-sm border border-card section-card flex flex-col">
+                            <h3 class="text-lg font-semibold text-main">Full-Stack Security Dashboard</h3>
+                            <p class="text-sm text-secondary mt-1">Oct 2024 - Nov 2024</p>
+                            <ul class="mt-4 list-disc list-inside text-secondary space-y-2 text-sm flex-grow">
+                                <li>Led end-to-end development from Figma design to a responsive React frontend.</li>
+                                <li>Engineered a FastAPI backend with SQLAlchemy for data management.</li>
+                                <li>Strengthened security with Role-Based Access Control (RBAC) and JWT.</li>
                             </ul>
+                            <div class="mt-6 pt-4 border-t border-card flex space-x-4">
+                                <a href="#" class="text-accent hover:underline font-medium text-sm">Live Demo</a>
+                                <a href="#" class="text-accent hover:underline font-medium text-sm">Source Code</a>
+                            </div>
                         </div>
-                        <div class="border border-gray-200 p-6 rounded-lg">
-                            <h3 class="text-lg font-semibold text-gray-800">Healthcare Management Platform</h3>
-                            <p class="text-sm text-gray-400">Mar 2024 - Feb 2025</p>
-                            <ul class="mt-4 list-disc list-inside text-gray-700 space-y-2 text-sm">
+                        <div class="bg-card p-6 rounded-xl shadow-sm border border-card section-card flex flex-col">
+                            <h3 class="text-lg font-semibold text-main">Healthcare Management Platform</h3>
+                            <p class="text-sm text-secondary mt-1">Mar 2024 - Feb 2025</p>
+                            <ul class="mt-4 list-disc list-inside text-secondary space-y-2 text-sm flex-grow">
                                 <li>Architected a robust backend using Python with FastAPI and PostgreSQL.</li>
                                 <li>Utilized Docker to containerize the application for scalable deployment.</li>
                                 <li>Developed and secured 15+ RESTful APIs with RBAC and rate limiting.</li>
                             </ul>
+                            <div class="mt-6 pt-4 border-t border-card flex space-x-4">
+                                <a href="#" class="text-accent hover:underline font-medium text-sm">Source Code</a>
+                            </div>
                         </div>
                     </div>
                 </section>
 
-                <section id="skills">
-                    <h2 class="text-xl font-bold text-gray-900 border-b pb-3">Technical Proficiencies</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 mt-6">
+                <section id="skills" class="mb-16 fade-in-section">
+                    <h2 class="text-2xl font-bold text-main border-b-2 border-card pb-4">Technical Proficiencies</h2>
+                    <div class="mt-6 space-y-8">
                         <div>
-                            <h3 class="font-semibold text-gray-800">Languages</h3>
-                            <p class="text-gray-600">Python, JavaScript (ES6+), Go, C, SQL</p>
+                            <h3 class="font-semibold text-main text-lg mb-3">Languages & Databases</h3>
+                            <div class="flex flex-wrap"><span class="skill-badge">Python</span><span class="skill-badge">JavaScript</span><span class="skill-badge">Go</span><span class="skill-badge">SQL</span><span class="skill-badge">PostgreSQL</span><span class="skill-badge">MongoDB</span></div>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-gray-800">Frontend</h3>
-                            <p class="text-gray-600">React (Hooks, Router), HTML5, CSS3 (Flexbox/Grid)</p>
+                            <h3 class="font-semibold text-main text-lg mb-3">Frontend & Backend</h3>
+                            <div class="flex flex-wrap"><span class="skill-badge">React</span><span class="skill-badge">HTML5/CSS3</span><span class="skill-badge">FastAPI</span><span class="skill-badge">Flask</span></div>
                         </div>
                         <div>
-                            <h3 class="font-semibold text-gray-800">Backend</h3>
-                            <p class="text-gray-600">FastAPI, Flask</p>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Databases</h3>
-                            <p class="text-gray-600">PostgreSQL, MongoDB, SQLite, MySQL</p>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-gray-800">DevOps & Cloud</h3>
-                            <p class="text-gray-600">Docker, CI/CD (GitHub Actions, Jenkins), AWS (S3, EC2, RDS, SES)</p>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-gray-800">Testing</h3>
-                            <p class="text-gray-600">Pytest</p>
-                        </div>
-                         <div>
-                            <h3 class="font-semibold text-gray-800">Developer Tools</h3>
-                            <p class="text-gray-600">Git, Agile & Scrum, SDLC, Webpack</p>
+                            <h3 class="font-semibold text-main text-lg mb-3">DevOps, Cloud & Tools</h3>
+                            <div class="flex flex-wrap"><span class="skill-badge">Docker</span><span class="skill-badge">CI/CD</span><span class="skill-badge">AWS</span><span class="skill-badge">Git</span><span class="skill-badge">Pytest</span></div>
                         </div>
                     </div>
 
-                    <div class="mt-12">
-                         <p class="text-gray-700">
-                            This chart provides a visual representation of my skills across different areas of development, highlighting my strengths as a full-stack engineer.
-                        </p>
+                    <div class="mt-12 bg-card p-8 rounded-xl shadow-sm border border-card section-card">
+                         <p class="text-secondary text-center max-w-lg mx-auto">
+                            This chart visually represents my proficiency across key development domains.
+                         </p>
                         <div class="mt-6 chart-container">
                             <canvas id="skillsChart"></canvas>
                         </div>
@@ -158,6 +227,42 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // --- Theme Toggler ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+            if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                lightIcon.classList.remove('hidden');
+                document.documentElement.classList.add('dark');
+            } else {
+                darkIcon.classList.remove('hidden');
+                document.documentElement.classList.remove('dark');
+            }
+
+            themeToggleBtn.addEventListener('click', function() {
+                darkIcon.classList.toggle('hidden');
+                lightIcon.classList.toggle('hidden');
+                if (localStorage.getItem('color-theme')) {
+                    if (localStorage.getItem('color-theme') === 'light') {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    }
+                } else {
+                    if (document.documentElement.classList.contains('dark')) {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.setItem('color-theme', 'light');
+                    } else {
+                        document.documentElement.classList.add('dark');
+                        localStorage.setItem('color-theme', 'dark');
+                    }
+                }
+            });
+
+            // --- Chart.js Radar Chart ---
             const ctx = document.getElementById('skillsChart').getContext('2d');
             const skillsChart = new Chart(ctx, {
                 type: 'radar',
@@ -180,77 +285,45 @@
                     responsive: true,
                     scales: {
                         r: {
-                            angleLines: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
-                            },
+                            angleLines: { color: 'rgba(128, 128, 128, 0.2)' },
+                            grid: { color: 'rgba(128, 128, 128, 0.2)' },
                             pointLabels: {
-                                font: {
-                                    size: 12,
-                                    family: "'Inter', sans-serif"
-                                },
-                                color: '#374151'
+                                font: { size: 13, family: "'Inter', sans-serif" },
+                                color: '#6b7280'
                             },
-                            ticks: {
-                                display: false,
-                                beginAtZero: true,
-                                max: 100,
-                                stepSize: 20
-                            }
+                            ticks: { display: false, beginAtZero: true, max: 100 }
                         }
                     },
                     plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.r !== null) {
-                                        label += context.parsed.r + '%';
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
+                        legend: { display: false },
+                        tooltip: { callbacks: { label: (c) => `${c.dataset.label || ''}: ${c.parsed.r}%` } }
                     }
                 }
             });
 
-            const sections = document.querySelectorAll('section');
+            // --- Intersection Observer for Active Nav Link & Animations ---
+            const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-link');
+            const animatedSections = document.querySelectorAll('.fade-in-section');
 
-            const observer = new IntersectionObserver((entries) => {
+            const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        // Handle nav link highlighting
                         navLinks.forEach(link => {
                             link.classList.remove('active');
                             if (link.getAttribute('href').substring(1) === entry.target.id) {
                                 link.classList.add('active');
                             }
                         });
+                        // Handle fade-in animation
+                        entry.target.classList.add('is-visible');
                     }
                 });
-            }, { rootMargin: "-50% 0px -50% 0px" });
+            }, { rootMargin: "-40% 0px -60% 0px" });
 
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            navLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
+            sections.forEach(section => sectionObserver.observe(section));
+            animatedSections.forEach(section => sectionObserver.observe(section));
         });
     </script>
 </body>
